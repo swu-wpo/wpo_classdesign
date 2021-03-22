@@ -1,4 +1,4 @@
-# chattingrobot
+# chatting-robot
 
 ## Project setup
 ```
