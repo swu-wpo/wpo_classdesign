@@ -1,4 +1,4 @@
-# photo-check-in
+# chattingrobot
 
 ## Project setup
 ```
