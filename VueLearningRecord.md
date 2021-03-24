@@ -144,6 +144,10 @@ https://segmentfault.com/a/1190000017008697
 
 ```
 
+### warning Delete `␍` prettier/prettier（eslint配置的一些问题）
+
+npm run lint --fix
+
 
 
 <i>2021.3.18</i>
