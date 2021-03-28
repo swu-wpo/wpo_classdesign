@@ -1,3 +1,31 @@
+##  VUE的相关理解
+
+### 数据的双向绑定实现原理
+
+
+
+### MVVM
+
+
+
+### 渐进式
+
+
+
+
+
+async function test() {
+
+await sleep(10)
+
+}
+
+  function debouce(fn, ms) {
+
+  return () => {}
+
+}
+
 <i>2021.3.16</i>
 
 ## VUE安装
@@ -394,3 +422,6 @@ this.$axios.all([
  
 
 <i>2021.3.19</i>
+
+### 
+
