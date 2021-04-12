@@ -3,9 +3,12 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
+import snackbar from "@/store/modules/snackbar";
 export default new Vuex.Store({
   state: {},
   mutations: {},
   actions: {},
-  modules: {},
+  modules: {
+    snackbar
+  },
 });
