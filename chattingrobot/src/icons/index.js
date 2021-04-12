@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import SvgIcon from '@/components/SvgIcon' // svg组件
-Vue.component('svg-icon', SvgIcon)
+Vue.component('svg-icon', SvgIcon)//注册组件
 const requireAll = requireContext => requireContext.keys().map(requireContext)
 const req = require.context('./svg', true, /\.svg$/)
 //这行代码就会去 svg 文件夹（不包含子目录）下找所有文件名以 .svg 结尾的文件能被 require 的文件。
