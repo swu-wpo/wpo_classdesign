@@ -429,3 +429,8 @@ https://blog.csdn.net/weixin_44356647/article/details/105361571?utm_medium=distr
 
 
 
+2021.4.12
+
+## 运用vuex封装v-snackbar
+
+https://blog.csdn.net/weixin_39929961/article/details/110469661
