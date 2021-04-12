@@ -21,19 +21,20 @@
                 icons-and-text>
           <v-tabs-slider></v-tabs-slider>
 
-          <v-tab>
+          <v-tab @click="$v.$reset()">
             登录
             <v-icon>mdi-login-variant</v-icon>
           </v-tab>
           <v-divider class="mx-4"
                      vertical></v-divider>
-          <v-tab>
+          <v-tab @click="$v.$reset()">
             注册
             <v-icon>mdi-account-plus-outline</v-icon>
           </v-tab>
         </v-tabs>
 
-        <v-tabs-items v-model="tab">
+        <v-tabs-items v-model="
+                 tab">
           <v-tab-item>
             <form ref="login">
               <div class="form">
@@ -42,11 +43,18 @@
                               :counter="16"
                               label="用户名"
                               required
+                              clearable
+                              prepend-icon="mdi-account-outline"
                               @input="$v.userName.$touch()"
                               @blur="$v.userName.$touch()"></v-text-field>
                 <v-text-field v-model="passWord"
                               :error-messages="pwdErrors"
                               label="密码"
+                              prepend-icon="mdi-lock-outline"
+                              :append-icon="pwdShow ? 'mdi-eye' : 'mdi-eye-off'"
+                              :type="pwdShow ? 'text' : 'password'"
+                              @click:append="pwdShow = !pwdShow"
+                              clearable
                               required
                               @input="$v.passWord.$touch()"
                               @blur="$v.passWord.$touch()"></v-text-field>
@@ -65,7 +73,7 @@
                   </template>
                   <span>Refresh form</span>
                 </v-tooltip>
-                <v-btn @click="submit"
+                <v-btn @click="submitLogin"
                        color="#009DFF"><span>Login</span></v-btn>
               </div>
 
@@ -80,18 +88,26 @@
                               :counter="16"
                               label="用户名"
                               required
+                              clearable
+                              prepend-icon="mdi-account-plus-outline"
                               @input="$v.userName.$touch()"
                               @blur="$v.userName.$touch()"></v-text-field>
                 <v-text-field v-model="passWord"
                               :error-messages="pwdErrors"
                               label="密码"
+                              type="password"
+                              prepend-icon="mdi-lock-plus-outline"
                               required
+                              clearable
                               @input="$v.passWord.$touch()"
                               @blur="$v.passWord.$touch()"></v-text-field>
                 <v-text-field v-model="passWord1"
                               :error-messages="pwd1Errors"
                               label="再输一次密码"
+                              type="password"
+                              prepend-icon="mdi-lock-plus-outline"
                               required
+                              clearable
                               @input="$v.passWord1.$touch()"
                               @blur="$v.passWord1.$touch()"></v-text-field>
                 <v-checkbox v-model="checkbox"
@@ -115,7 +131,7 @@
                   </template>
                   <span>Refresh form</span>
                 </v-tooltip>
-                <v-btn @click="submit"
+                <v-btn @click="submitReg"
                        color="#009DFF"><span>Register</span></v-btn>
               </div>
               <br>
@@ -137,7 +153,7 @@
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
 import { validationMixin } from 'vuelidate'
-import { required, maxLength, minLength } from 'vuelidate/lib/validators'
+import { required, maxLength, minLength, sameAs } from 'vuelidate/lib/validators'
 export default {
   //import引入的组件需要注入到对象中才能使用
   name: 'Login',
@@ -146,7 +162,7 @@ export default {
   validations: {
     userName: { required, maxLength: maxLength(16), minLength: minLength(4) },
     passWord: { required, minLength: minLength(6) },
-    passWord1: { required, minLength: minLength(6) },
+    passWord1: { required, minLength: minLength(6), sameAsPassword: sameAs('password') },
     checkbox: {
       checked(val) {
         return val
@@ -162,9 +178,13 @@ export default {
       userName: '',
       passWord: '',
       passWord1: '',
-
+      pwdShow: false,
       checkbox: false,
       formHasErrors: false,
+
+      //测试登录
+      u: '1234',
+      pwd: '123456',
     }
   },
 
@@ -195,13 +215,41 @@ export default {
       if (!this.$v.passWord1.$dirty) return errors
       !this.$v.passWord1.minLength && errors.push('密码至少6位')
       !this.$v.passWord1.required && errors.push('再输一次密码')
-      this.passWord !== this.passWord1 && errors.push('两次输入密码不一致')
+      !this.$v.passWord1.sameAs && errors.push('两次输入密码不一致')
       return errors
     },
   },
   //方法集合
   methods: {
-    submit() {
+    submitLogin() {
+      this.$v.$touch()
+      // this.$v.userName.$touch()
+      // this.$v.passWord.$touch()
+      let flag = this.$v.$dirty
+
+      // refresh图标的显示
+      if (flag) {
+        this.formHasErrors = true
+      } else {
+        this.formHasErrors = false
+      }
+      // 验证状态
+      if (this.$v.userName.$invalid || this.$v.passWord.$invalid) {
+        this.$store.dispatch('snackbar/openSnackbar', {
+          msg: '登录失败',
+          color: 'warning'
+        })
+      } else if (this.userName === this.u && this.passWord === this.pwd) {
+        // setTimeout(() => {
+        //   alert('登陆成功')
+        // }, 500)
+        this.$store.dispatch('snackbar/openSnackbar', {
+          msg: '登录成功',
+          color: 'success'
+        })
+      }
+    },
+    submitReg() {
       this.$v.$touch()
       let flag = this.$v.$dirty
       console.log(flag)
