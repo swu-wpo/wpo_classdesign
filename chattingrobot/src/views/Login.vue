@@ -69,11 +69,7 @@
       </v-card>
 
     </v-main>
-    <v-footer absolute
-              color="#005982"
-              width="100%">
-      <div style="color:white;margin: 0 auto;">{{ new Date().getFullYear() }} — 西南大学蚕桑纺织与生物质科学学院 地址：重庆市北碚区天生路2号 邮编：400715</div>
-    </v-footer>
+    <Footer></Footer>
   </div>
 </template>
 
@@ -82,8 +78,12 @@
 //例如：import 《组件名称》 from '《组件路径》';
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, minLength } from 'vuelidate/lib/validators'
+import Footer from '../views/components/Footer.vue'
 export default {
   //import引入的组件需要注入到对象中才能使用
+  components: {
+    Footer
+  },
   name: 'Login',
   mixins: [validationMixin],
 

@@ -1,30 +1,25 @@
 <!-- 全局布局 -->
 <template>
-  <v-container class="grey lighten-5">
-    <v-row no-gutters>
-      <template v-for="n in 4">
-        <v-col :key="n">
-          <v-card class="pa-2"
-                  outlined
-                  tile>
-            Column
-          </v-card>
-        </v-col>
-        <v-responsive v-if="n === 2"
-                      :key="`width-${n}`"
-                      width="100%"></v-responsive>
-      </template>
-    </v-row>
-  </v-container>
+  <div>
+    <Navigation></Navigation>
+
+    <v-main>
+      <router-view></router-view>
+    </v-main>
+
+    <Footer></Footer>
+  </div>
 </template>
 
 <script>
-//这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
-//例如：import 《组件名称》 from '《组件路径》';
-
+import Footer from './Footer'
+import Navigation from './Navigation'
 export default {
   //import引入的组件需要注入到对象中才能使用
-  components: {},
+  components: {
+    Footer,
+    Navigation
+  },
   data() {
     //这里存放数据
     return {

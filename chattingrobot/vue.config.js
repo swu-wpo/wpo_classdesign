@@ -4,6 +4,7 @@ function resolve(dir) {
 }
 
 module.exports = {
+	// publicPath: process.env.NODE_ENV === 'development' ? '/feedSystem' : '/feedSystem',
   transpileDependencies: ["vuetify"],
   chainWebpack: config => {
 		//配置svg-sprite-loader

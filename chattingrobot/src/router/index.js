@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-// import Layout from "../views/components/Layout.vue";
+import Layout from "../views/components/Layout.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 
@@ -38,8 +38,12 @@ const routes = [
   {
     path: "/Home",
     name: "Home",
-    // redirect:"/Home",
-    component:()=> import('@/views/components/Layout'),
+    component: Layout,
+  },
+  {
+    path: "/Dashboard",
+    name: "Dashboard",
+    component: Layout,
   },
 ];
 
