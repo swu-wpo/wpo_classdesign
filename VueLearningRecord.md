@@ -320,7 +320,96 @@ export default {
 }
 ```
 
+ 
 
+### 7 beforeEach()
+
+路由拦截是我们项目中经常遇到的普遍问题，例如当你访问任何一个页面的时候需要验证该用户有没有登录等；对此，vue-router提供的beforeEach可以方便的实现路由的导航守卫；
+
+使用 `router.beforeEach` 注册一个全局前置守卫：
+
+```js
+router.beforeEach((to, from, next) => {
+  	to // 要去的路由
+	from // 当前路由
+	next() // 放行的意思
+}
+})
+```
+
+当一个导航触发时，全局前置守卫按照创建顺序调用。守卫是异步解析执行，此时导航在所有守卫 resolve 完之前一直处于 等待中。
+
+每个守卫方法接收三个参数：
+
+1. to: Route: 即将要进入的**目标路由对象**
+
+2. from: Route: 当前导航**正要离开的路由**
+
+3. next: Function: 一定要调用该方法来 resolve 这个钩子。执行效果依赖 next 方法的调用参数
+
+   next(): 进行管道中的下一个钩子。如果全部钩子执行完了，则导航的状态就是 confirmed (确认的)。
+
+   next(false): 中断当前的导航。如果浏览器的 URL 改变了 (可能是用户手动或者浏览器后退按钮)，那么 URL 地址会重置到 from 路由对应的地址。
+
+   next('/') 或者 next({ path: '/' }): 跳转到一个不同的地址。当前的导航被中断，然后进行一个新的导航。你可以向 next 传递任意位置对象，且允许设置诸如 replace: true、name: 'home' 之类的选项以及任何用在 router-link 的 to prop 或 router.push 中的选项。
+
+   next(error): (2.4.0+) 如果传入 next 的参数是一个 Error 实例，则导航会被终止且该错误会被传递给 router.onError() 注册过的回调。
+
+确保要调用 next 方法，否则钩子就不会被 resolved。
+只有`next()`是放行，其他的诸如：`next('/logon') 、 next(to) 或者 next({ ...to, replace: true })`都不是放行，如果`next()`里有参数的话，`next()`就像被重载一样，就有了不同的功能：**中断当前导航，执行新的导航**
+
+```js
+beforeEach((to, from, next) => {
+  next('/logon')
+}
+// 以上代码实际是下列代码的意思
+beforeEach((to, from, next) => {
+  beforeEach(('/logon', from, next) => {
+  	 beforeEach(('/logon', from, next) => {
+  	 	 beforeEach(('/logon', from, next) => {
+  	 	 	beforeEach...  // 一直循环下去...... , 因为我们没有使用 next() 放行
+ 		}
+ 	 }
+  }
+}
+// 如果把上面的守卫改一下，当我在地址栏输入/home时
+beforeEach((to, from, next) => {
+   if(to.path === '/home') {
+   	next('/logon')
+   } else {
+    // 如果要去的地方不是 /home ， 就放行
+   	next()
+   }
+}
+/*我本来要去/home路由，因此执行了第一次 beforeEach((to, from, next)，但是这个路由守卫中判断了如果要去的地方是'/home'，就执行next('/logon')，
+所以想要访问/home可以这么看*/
+beforeEach((to, from, next) => {
+   beforeEach(('/logon', from, next) => {
+     next()  // 现在要去的地方不是 /home,因此放行
+   }
+}
+/*注意：重点就在这，next('/logon')不是说直接去/logon路由，而是中断（不是CPU的那个中断！VUE中的中断就是此时不会执行router.afterEach(() => {}）这一次路由守卫的操作，又进入一次路由守卫，就像嵌套一样，一层路由守卫，然后又是一层路由守卫，此时路由守卫进入到第二层时，to.path已经不是/home了，这个时候才执行next()放行操作。*/
+```
+
+
+
+### 8 动态添加路由addRoutes()
+
+- 出现问题：
+
+  在addRoutes()之后第一次访问被添加的路由会白屏，这是因为刚刚addRoutes()就立刻访问被添加的路由，然而此时addRoutes()没有执行结束，因而找不到刚刚被添加的路由导致白屏。因此需要从新访问一次路由才行。
+
+- 解决方法：
+  此时就要使用**next({ ...to, replace: true })**来确保addRoutes()时动态添加的路由已经被完全加载上去。**replace: true只是一个设置信息**，告诉VUE本次操作后，不能通过浏览器后退按钮，返回前一个路由。因此next({ ...to, replace: true })可以写成next({ ...to })，不过你应该不希望用户在addRoutes()还没有完成的时候，可以点击浏览器回退按钮搞事情吧。
+
+  其实next({ ...to })的执行很简单，它会判断：
+
+  如果参数to不能找到对应的路由的话，就再执行一次beforeEach((to, from, next)直到其中的next({ ...to})能找到对应的路由为止。也就是说此时addRoutes()已经完成啦，找到对应的路由之后，接下来将执行前往对应路由的beforeEach((to, from, next) ，因此需要用代码来判断这一次是否就是前往对应路由的beforeEach((to, from, next)，如果是，就执行next()放行。
+
+  如果守卫中没有正确的放行出口的话，会一直next({ ...to})进入死循环 !!!
+
+  因此你还需要确保在当addRoutes()已经完成时，所执行到的这一次beforeEach((to, from, next)中有一个正确的next()方向出口。
+  
 
 ## Axios
 
@@ -401,6 +490,9 @@ Vue.prototype.$axios = axios
 - patch：更新数据，是对put方法的补充，用来对已知资源进行局部更新
 - delete：请求服务器删除指定的数据
 
+`baseURL` 将自动加在 `url` 前面，除非 `url` 是一个绝对 URL。
+ 它可以通过设置一个 `baseURL` 便于为 axios 实例的方法传递相对 URL
+
 
 
 ### 4 并发请求
@@ -420,6 +512,101 @@ this.$axios.all([
 ```
 
  
+
+### 5 拦截器
+
+写于@/utils/request.js
+
+#### 概述
+
+在请求或响应被 then 或 catch 处理前拦截它们。拦截器分为请求拦截器和响应拦截器:
+
+1. **请求拦截器**（interceptors.requst）是指可以拦截每次或指定HTTP请求，并可修改配置项。
+2. **响应拦截器**（interceptors.response）可以在每次HTTP请求后拦截住每次或指定HTTP请求，并可修改返回结果项。
+
+#### 基础配置
+
+1.请求拦截器
+
+```js
+// 请求拦截器
+service.interceptors.request.use(
+  config => {
+    // 发送请求前做什么
+    if (store.getters.token) {
+      // 若是有做鉴权token,就给头部带上token
+    }
+    return config
+  },
+  error => {
+    // 在此定义请求错误需要做什么
+    console.log(error)
+    return Promise.reject(error)
+  }
+)
+
+```
+
+2.响应拦截器
+
+```js
+// 响应拦截器
+service.interceptors.response.use(
+  response => {
+    if(response.headers['content-disposition']) { //处理下载文件
+      return response
+    }
+    return response.data
+  },
+  error => {
+    const response = error.response
+    //显示后台返回message
+    if (!response) {
+      notification.error({
+        message: error || 'error'
+      })
+      return Promise.reject(error)
+    }
+    
+    const { data } = response
+    if (response.status === 422) {
+      // 返回状态码为422则重新登录
+      if (data.message === 'Signature has expired') {
+        store.dispatch('user/resetToken')
+        notification.error({
+          message: '重新登录',
+          description: 'Authorization verification failed'
+        })
+        setTimeout(()=>{
+          if(!store.getters.token) location.reload()
+        },1000)
+        return Promise.reject(error)
+      }
+    }
+
+    notification.error({
+      message: data.message || 'error'
+    })
+    return Promise.reject(data.message || 'error')
+  }
+)
+```
+
+3.创建拦截器
+
+```js
+var myInterceptor = axios.interceptors.request.use(function () {/*...*/});
+axios.interceptors.request.eject(myInterceptor);
+```
+
+4.移除拦截器
+
+```js
+var instance = axios.create();
+instance.interceptors.request.use(function () {/*...*/});
+```
+
+
 
 <i>2021.3.19</i>
 
