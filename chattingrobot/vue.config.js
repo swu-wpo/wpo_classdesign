@@ -4,7 +4,7 @@ function resolve(dir) {
 }
 
 module.exports = {
-	// publicPath: process.env.NODE_ENV === 'development' ? '/feedSystem' : '/feedSystem',
+	publicPath: process.env.NODE_ENV === 'development' ? '/ChattingRobot' : '/ChattingRobot',
   transpileDependencies: ["vuetify"],
   chainWebpack: config => {
 		//配置svg-sprite-loader
