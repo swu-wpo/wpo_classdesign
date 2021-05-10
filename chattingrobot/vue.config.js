@@ -8,6 +8,13 @@ module.exports = {
 	publicPath: process.env.NODE_ENV === 'development' ? '/ChattingRobot' : '/ChattingRobot',
   transpileDependencies: ["vuetify"],
   chainWebpack: config => {
+    config.resolve.alias
+    .set("@", resolve("src"))
+    .set("assets", resolve("src/assets"))
+    .set("components", resolve("src/components"))
+    .set("layout", resolve("src/layout"))
+    .set("static", resolve("src/static"));
+
 		//配置svg-sprite-loader
 		config.module
 			.rule('svg')
@@ -25,41 +32,26 @@ module.exports = {
 				symbolId: 'icon-[name]'
 			})
     },
-		rules: [
-      // SASS has different line endings than SCSS
-      // and cannot use semicolons in the markup
-      {
-        test: /\.sass$/,
-        use: [
-          'vue-style-loader',
-          'css-loader',
-          {
-            loader: 'sass-loader',
-           
-            // Requires sass-loader@^8.0.0
-            options: {
-              // This is the path to your variables
-              prependData: "@import '@/styles/variables.scss'"
-            },
-          },
-        ],
-      },
-      // SCSS has different line endings than SASS
-      // and needs a semicolon after the import.
-      {
-        test: /\.scss$/,
-        use: [
-          'vue-style-loader',
-          'css-loader',
-          {
-            loader: 'sass-loader',
-            // Requires sass-loader@^8.0.0
-            options: {
-              // This is the path to your variables
-              prependData: "@import '@/styles/variables.scss';"
-            },
-          },
-        ],
-      },
-    ],
+  //设置代理
+  // devServer: {
+  //   port: 8080,
+  //   host: "0.0.0.0",
+  //   https: false,
+  //   open: true,
+  //   openPage: "about",
+  //   hot: true,
+  //   disableHostCheck: true,
+  //   proxy: {
+  //     "/api": {
+  //       target: "https://cdn.awenliang.cn",
+  //       ws: true,
+  //       changeOrigin: true
+  //     },
+  //     "/foo": {
+  //       target: "https://cdn.awenliang.cn",
+  //       ws: true,
+  //       changeOrigin: true
+  //     }
+  //   }
+  // }
 };

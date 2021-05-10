@@ -1,26 +1,36 @@
 <!-- 全局布局 -->
 <template>
   <div class="container1">
-    <Navigation></Navigation>
+    <Header></Header>
 
     <div class="main1">
+      <div class="nav">
+        <Navigation></Navigation>
+      </div>
+      <div class='content'>
+
+      </div>
 
       <Body></Body>
+
     </div>
-    <Footer></Footer>
+    <Footer style="position:absolute;"></Footer>
   </div>
 </template>
 
 <script>
 import Footer from './Footer'
 import Navigation from './Navigation'
+import Header from './Header'
 import Body from './Body'
+
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {
+    Header,
     Footer,
     Navigation,
-    Body,
+    Body
   },
   data() {
     //这里存放数据
@@ -58,18 +68,23 @@ export default {
 .container1 {
   width: 100vw;
   height: 100vh;
-  background: rosybrown;
+  background: #f2f2f2;
 }
 .main1 {
-  width: 60%;
-  min-height: calc(100vh - 64px);
+  max-width: calc(100vw-100px);
+  min-height: calc(100vh - 84px);
+  margin: 20px 50px 0px 40px;
   overflow: auto;
   background: chartreuse;
+  display: flex;
+  flex-direction: row;
 }
-// .v-main {
-//   min-height: calc(100vh - 64px);
-//   width: 100%;
-//   background: rgba(240, 212, 245, 1);
-//   position: relative;
-// }
+.nav {
+  margin-right: 15px;
+}
+.content {
+  min-height: 100%;
+  width: 100%;
+  background: skyblue;
+}
 </style>

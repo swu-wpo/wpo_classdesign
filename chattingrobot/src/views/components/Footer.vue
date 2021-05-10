@@ -1,7 +1,6 @@
 <!-- 页脚 -->
 <template>
-  <v-footer absolute
-            color="#005982"
+  <v-footer color="#005982"
             width="100%">
     <div style="color:white;margin: 0 auto;">{{ new Date().getFullYear() }} — 西南大学蚕桑纺织与生物质科学学院 地址：重庆市北碚区天生路2号 邮编：400715</div>
   </v-footer>

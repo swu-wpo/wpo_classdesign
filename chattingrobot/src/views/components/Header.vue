@@ -1,25 +1,42 @@
-<!-- 侧边导航 -->
+<!-- 顶部导航 -->
 <template>
-  <div>
-    <!-- 侧边导航 -->
-    <v-navigation-drawer>
-      <v-list nav
-              dense>
-        <v-list-item-group v-for="(item, i) in navlist"
-                           :key="i"
-                           active-class="deep-blue--text text--accent-4">
-          <router-link :to="item.link">
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon color="blue">{{item.icon}}</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
-            </v-list-item>
-          </router-link>
+  <div class=''>
+    <v-app-bar color="blue"
+               dark
+               class="bar">
+      <v-toolbar-title>ChattingRobot</v-toolbar-title>
+      <!-- 顶部导航条 -->
+      <v-tabs v-model="tab"
+              centered
+              dark>
+        <v-tab v-for="item in tabs"
+               :key="item.tab">
+          {{ item.tab }}
+        </v-tab>
+      </v-tabs>
+      <span style="font-size:1rem;">xxx,您好！</span>
+      <!-- 用户下拉菜单 -->
+      <v-menu offset-y
+              bottom
+              transition="slide-y-transition">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon
+                 v-bind="attrs"
+                 v-on="on">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
 
-        </v-list-item-group>
-      </v-list>
-    </v-navigation-drawer>
+        <v-list>
+          <v-list-item v-for="(item, i) in list"
+                       :key="i"
+                       @click="toPage(item.link)">
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </v-app-bar>
+
   </div>
 </template>
 
@@ -28,7 +45,7 @@
 //例如：import 《组件名称》 from '《组件路径》';
 
 export default {
-  name: 'Navigation',
+  name: 'Header',
   //import引入的组件需要注入到对象中才能使用
   components: {},
   data() {
@@ -51,12 +68,6 @@ export default {
         { title: '个人中心', link: '/Home', icon: 'mdi-user' },
         { title: '退出登录', link: '/Login', icon: 'mdi-home' },
       ],
-      navlist: [
-        { title: '首页', link: '/Dashboard', icon: 'mdi-home' },
-        { title: '首页', link: '/Dashboard', icon: 'mdi-home' },
-        { title: '首页', link: '/Dashboard', icon: 'mdi-home' },
-        { title: '首页', link: '/Dashboard', icon: 'mdi-home' },
-      ],
     };
   },
   //监听属性 类似于data概念
@@ -65,7 +76,12 @@ export default {
   watch: {},
   //方法集合
   methods: {
-
+    toPage(link) {
+      if (link === '/Login') {
+        confirm("确定退出登陆吗？")
+      }
+      this.$router.push({ path: link })
+    }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
@@ -86,7 +102,11 @@ export default {
 </script>
 <style lang='scss' scoped>
 //@import url(); 引入公共css类
-// .v-navigation-drawer {
-
-// }
+.bar {
+  padding: 0 50px 0 50px;
+}
+.v-tabs {
+  width: 70%;
+  margin: 0 20px 0 20px;
+}
 </style>
