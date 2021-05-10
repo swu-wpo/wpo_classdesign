@@ -59,3 +59,7 @@ material-dashboard
 ## 项目结构
 
 全局样式设置：组件 合成一个Layout -> 导入main.js 还是 router.js -> 在每个网页都显示
+
+
+
+webpack中配置scss

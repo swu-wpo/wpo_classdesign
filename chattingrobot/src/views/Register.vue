@@ -66,7 +66,7 @@
           </v-tooltip>
           <v-btn @click="submitReg"
                  color="#009DFF">
-            <span>Register</span>
+            <span class="white_span">Register</span>
           </v-btn>
         </div>
         <router-link to="/Login">

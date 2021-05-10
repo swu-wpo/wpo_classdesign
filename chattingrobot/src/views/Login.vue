@@ -55,7 +55,7 @@
           </v-tooltip>
           <v-btn @click="submitLogin"
                  color="#009DFF">
-            <span>Login</span>
+            <span class="white_span">Login</span>
           </v-btn>
         </div>
         <router-link to="/Register">
@@ -141,6 +141,7 @@ export default {
           color: 'warning'
         })
       } else {
+        //后端接口调用
         if (this.userName === this.u && this.passWord === this.pwd) {
           setTimeout(() => {
             this.$store.dispatch('snackbar/openSnackbar', {
@@ -170,7 +171,7 @@ export default {
   },
 }
 </script>
-<style scoped>
+<style lang='scss' scoped>
 @import url('../styles/login.css');
 .main svg {
   width: 590px;
