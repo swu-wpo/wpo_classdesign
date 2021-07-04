@@ -62,4 +62,4 @@ material-dashboard
 
 
 
-webpack中配置scss
+webpack中配置scss svg

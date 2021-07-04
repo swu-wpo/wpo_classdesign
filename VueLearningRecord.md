@@ -48,7 +48,7 @@ https://blog.csdn.net/bbsyi/article/details/77897278?ops_request_misc=%257B%2522
 
 https://www.cnblogs.com/coober/p/10875647.html
 
-![image-20210317004712709](C:\Users\12876\AppData\Roaming\Typora\typora-user-images\image-20210317004712709.png)
+![image-20210317004712709](C:\Users\12876\Desktop\image-20210317004712709.png)
 
 ps: vue-cli3.0的目录比2.0的精简很多：
 
@@ -782,14 +782,14 @@ service.interceptors.response.use(
 )
 ```
 
-3.创建拦截器
+3.移除拦截器
 
 ```js
 var myInterceptor = axios.interceptors.request.use(function () {/*...*/});
 axios.interceptors.request.eject(myInterceptor);
 ```
 
-4.移除拦截器
+4.创建拦截器
 
 ```js
 var instance = axios.create();
@@ -1131,4 +1131,17 @@ store.registerModule('myModule', {
 
 
 
+## js-cookie
 
+//1、存cookie  set方法支持的属性有 ：  expires->过期时间    path->设置为指定页面创建cookie   domain-》设置对指定域名及指定域名的子域名可见  secure->值有false和true ,表示设置是否只支持https,默认是false
+Cookies.set('key', 'value');  //创建简单的cookie
+Cookies.set('key', 'value', { expires: 27 });//创建有效期为27天的cookie
+Cookies.set('key', 'value', { expires: 17, path: ''  }); //可以通过配置path,为当前页创建有效期7天的cookie
+
+//2、取cookie
+Cookies.get('key'); // 获取指定key 对应的value
+Cookies.get(); //获取所有value
+
+//3、删除cookie
+Cookies.remove('key');//删除普通的cookie
+Cookies.remove('name', { path: '' }); // 删除存了指定页面path的cookie
