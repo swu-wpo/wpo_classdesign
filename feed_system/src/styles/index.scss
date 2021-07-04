@@ -1,0 +1,23 @@
+@import './transition.scss';
+@import './el-ui.scss';
+$menuBg: #304156;
+$menuHover: #263445;
+
+$subMenuBg: #1f2d3d;
+$subMenuHover: #001528;
+
+html{
+  font-size: 16px;
+}
+body {
+  height: 100%;
+  margin: 0;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: Microsoft YaHei;
+  font-size:1rem ;
+}
+h4{
+  font-size: 1rem;
+}

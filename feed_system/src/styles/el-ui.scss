@@ -1,0 +1,72 @@
+// 全局 element-ui样式覆盖
+//表格
+.el-table__header-wrapper {
+  .el-table__header {
+    thead {
+      tr {
+        th {
+          font-size: 1rem;
+          background-color: #e7f3fd;
+          // #33e2ad
+          color: black;
+          
+        }
+      }
+    }
+  }
+}
+//表格中的单元
+.cell{
+  font-size: 1rem;
+  // font-weight: bold;
+  color: black;
+}
+//下拉框
+.el-select{
+  width: 100%;
+}
+//侧边菜单
+.el-submenu__title{
+  font-size: 1rem;
+}
+.el-menu-item{
+  font-size: 1rem;
+}
+//按钮
+.el-button{
+  font-size: 1rem;
+  font-weight: bold;
+  // color: black;
+}
+.el-button--default{
+  color: black;
+  background:white;
+}
+
+//表单label
+.el-form-item__label{
+  font-size: 1rem;
+}
+// 单选项 复选项
+.el-radio__label,.el-checkbox__label{
+  font-size: 1rem;
+}
+//选项卡
+.el-tabs__item{
+  font-size: 1rem;
+}
+//消息弹框
+.el-message-box__content{
+font-size: 1rem;
+}
+//侧边栏样式
+.el-submenu__title{
+  border-bottom: 1px solid rgba($color:white, $alpha: 0.67) !important;
+}
+.el-submenu .el-menu-item{
+  border-bottom: 1px solid rgba($color:white, $alpha: 0.2);
+}
+// .el-submenu .el-menu-item .is-active{
+  
+// }
+
